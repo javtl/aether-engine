@@ -1,4 +1,4 @@
-# AetherEngine 🎰🚀
+# Aether Engine 🎰🚀
 
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue?style=flat-square&logo=cplusplus)](https://en.wikipedia.org/wiki/C%2B%2B17)
 [![CMake](https://img.shields.io/badge/CMake-3.14+-green?style=flat-square&logo=cmake)](https://cmake.org/)
@@ -331,23 +331,4 @@ Ver [LICENSE](LICENSE) para detalles completos.
 🔗 [GitHub](https://github.com/javtl) | [LinkedIn](https://linkedin.com/javierlsw)
 
 **Especialización:** Sistemas Embebidos, Firmware, Bajo Nivel, Redes TCP/IP  
-**Stack:** C++17, CMake, Linux/Windows, Git, GoogleTest, ASan/Valgrind
 
----
-
-## 📞 Contacto & Soporte
-
-- 📧 Email: [Tu email de contacto]
-- 💼 LinkedIn: linkedin.com/javierlsw
-- 🐙 GitHub Issues: Reporta bugs o sugiere features
-
----
-
-<div align="center">
-
-**Construido con ❤️ en C++17 | Optimizado para Máquinas Recreativas & Sistemas Embebidos**
-
-[![Commit Activity](https://img.shields.io/badge/Commits-Weekly-blue?style=flat-square)]()
-[![Last Updated](https://img.shields.io/badge/Last%20Update-2026--September-green?style=flat-square)]()
-
-</div>

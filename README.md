@@ -116,8 +116,8 @@ Visualización en tiempo real de estados y eventos:
 
 ### 1. Clonar el Repositorio
 ```bash
-git clone https://github.com/javtl/aether-slot-engine.git
-cd aether-slot-engine
+git clone https://github.com/javtl/aether-engine.git
+cd aether-engine
 ```
 
 ### 2. Compilar con CMake

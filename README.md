@@ -187,7 +187,7 @@ fsm->handleEvent(Aether::Event::PAYOUT_COMPLETE);  // PAYOUT → IDLE
 ### Organización de Módulos
 
 ```
-aether-slot-engine/
+aether-engine/
 ├── CMakeLists.txt                 # Configuración CMake moderna (C++17)
 ├── include/
 │   ├── Fsm.hpp                   # Máquina de Estados Finita

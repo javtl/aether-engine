@@ -1,4 +1,4 @@
-# Aether Engine 🎰🚀
+# Aether Engine 🌠
 
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue?style=flat-square&logo=cplusplus)](https://en.wikipedia.org/wiki/C%2B%2B17)
 [![CMake](https://img.shields.io/badge/CMake-3.14+-green?style=flat-square&logo=cmake)](https://cmake.org/)

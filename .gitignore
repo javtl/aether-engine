@@ -1,0 +1,17 @@
+# Build directories
+/build/
+/bin/
+/lib/
+/out/
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.user
+*.suo
+*.userosscache
+
+# Executables & Logs
+*.log
+*.out
+*.exe

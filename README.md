@@ -530,34 +530,8 @@ This project is licensed under the MIT License. See `LICENSE` for details.
 
 ## 👨‍💻 Author
 
-**Javier L.**
-_Junior C++ / Embedded Developer_
-📍 Cádiz, Spain
-
-**Interests:** C++ · Embedded Systems · Firmware · Linux · Networking · Systems Programming
+[**Javier L.**](https://www.linkedin.com/in/javierlsw/)
 
 ## ⭐ Why Aether Engine?
 
-Aether Engine is a practical project for exploring how modern C++ can be used to build software that sits close to hardware. It combines:
-
-```text
-        ┌──────────────┐
-        │   Modern C++ │
-        └──────┬───────┘
-               │
-     ┌─────────┼─────────┐
-     ▼         ▼         ▼
-    FSM    Concurrency  Crypto
-     │         │         │
-     └─────────┼─────────┘
-               ▼
-          Unit Testing
-               │
-               ▼
-         GitHub Actions
-               │
-               ▼
-       Embedded Architecture
-```
-
-_Built to learn. Designed to scale. Tested continuously._
+Aether Engine is a practical project for exploring how modern C++ can be used to build software that sits close to hardware.

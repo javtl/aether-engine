@@ -1,311 +1,181 @@
 # Aether Engine 🌠
 
-**Modern C++17 • Embedded Systems • State Machines • Concurrency • Testing**
+**Modern C++17 • Embedded Systems • State Machines • Testing • Cryptography**
 
-Aether Engine is a learning and portfolio project focused on modern C++17, deterministic state machines, concurrency, testing, and embedded-oriented software architecture.
+Aether Engine is a learning and portfolio project demonstrating modern C++17 practices, deterministic state machines, unit testing, and embedded systems architecture.
 
 ## 🚀 About the Project
 
-Aether Engine is a modular C++17 game-control engine inspired by the architecture of embedded gaming machines and hardware-controlled systems.
+Aether Engine is a modular C++17 game-control engine designed to explore the software engineering challenges of embedded gaming systems:
 
-The project focuses on the software engineering challenges behind this type of system:
-
-- Deterministic state management
+- Deterministic finite state machine (FSM) for game lifecycle
 - Event-driven architecture
-- Thread-safe communication
-- Cryptographic hashing and verification
-- Hardware abstraction
-- Automated testing
-- Memory and concurrency analysis
+- Cryptographic hashing and verification (SHA-256)
+- Thread-safe concurrent architecture
+- Comprehensive unit testing with GoogleTest
+- Memory and concurrency analysis with sanitizers
 - Cross-platform CMake builds
 
-> _The initial version is intentionally software-focused. Hardware communication and embedded targets are planned as future stages of the project._
+> **Purpose**: This is a learning and portfolio project, not a production gambling platform. It's designed to practice and demonstrate modern C++ in a realistic systems context.
 
-## 🎯 Main Goal
+## 📊 Current Status
 
-The goal of Aether Engine is not to build a production gambling platform. It is to use a realistic systems-oriented project to practice and demonstrate:
+### ✅ Completed
 
-```text
-Modern C++
-      │
-      ├── State Machines
-      ├── Concurrency
-      ├── Cryptography
-      ├── Unit Testing
-      ├── CMake
-      ├── CI/CD
-      └── Embedded Architecture
-```
+- [x] Project structure and CMake configuration
+- [x] Finite State Machine (FSM) implementation
+  - 6 states: IDLE, ARMED, SPINNING, EVALUATING, PAYOUT, ERROR
+  - Full transition validation
+  - State change callbacks
+- [x] GoogleTest integration
+- [x] Unit tests (8 tests, 100% passing)
+  - State transitions
+  - Invalid event rejection
+  - Error handling
+  - Callback verification
+- [x] Compiler warnings configuration (-Wall -Wextra -Wpedantic)
+- [x] Git repository with clean history
 
-## 🧩 Current Status
+### 🚧 In Development
 
-### 🚧 Early Development
-
-Aether Engine is currently in its initial development stage. The architecture and roadmap are defined, while the implementation is being built incrementally.
-
-**Current Focus:**
-
-- [x] Project skeleton
-- [x] CMake configuration
-- [ ] Basic FSM implementation
-- [ ] GoogleTest integration
-- [ ] GitHub Actions CI
-- [ ] SHA-256 implementation
-- [ ] Deterministic round generation
+- [ ] Stage 3: Quality tools (Sanitizers, RAII, reliable tests)
+- [ ] SHA-256 cryptographic engine
+- [ ] Provably Fair protocol implementation
 - [ ] Thread-safe event system
-- [ ] Sanitizer configuration
+- [ ] Hardware abstraction layer
 
-_(The README describes the target architecture, while unchecked roadmap items represent planned work.)_
+### ⏳ Planned
 
-## 🏗️ Architecture
-
-The project is designed around several independent components.
-
-```text
-                     ┌──────────────────────┐
-                     │      Aether Engine   │
-                     └──────────┬───────────┘
-                                │
-              ┌─────────────────┼─────────────────┐
-              │                 │                 │
-              ▼                 ▼                 ▼
-       ┌────────────┐    ┌─────────────┐   ┌────────────┐
-       │   Game FSM │    │Crypto Engine│   │   Events   │
-       └──────┬─────┘    └──────┬──────┘   └─────┬──────┘
-              │                 │                 │
-              └─────────────────┼─────────────────┘
-                                │
-                                ▼
-                     ┌─────────────────────┐
-                     │ Hardware Abstraction│
-                     │        Layer        │
-                     └─────────┬───────────┘
-                               │
-                 ┌─────────────┼─────────────┐
-                 ▼             ▼             ▼
-               UART           I2C           SPI
-```
-
-The architecture is deliberately modular so that hardware-specific code can be introduced without coupling it directly to the game logic.
+- [ ] GitHub Actions CI/CD pipeline
+- [ ] Performance benchmarking
+- [ ] Code coverage analysis
+- [ ] UART/I2C/SPI abstraction
+- [ ] Embedded hardware targets
 
 ## 🎮 Finite State Machine
 
-The core engine is based on a deterministic finite state machine.
+The core component is a deterministic FSM controlling the game lifecycle.
 
-```text
-                   INSERT_CREDIT
-                         │
-                         ▼
-                    ┌─────────┐
-                    │  IDLE   │
-                    └────┬────┘
-                         │
-                         ▼
-                    ┌─────────┐
-                    │  ARMED  │
-                    └────┬────┘
-                         │
-                   SPIN_REQUESTED
-                         │
-                         ▼
-                  ┌─────────────┐
-                  │  SPINNING   │
-                  └──────┬──────┘
-                         │
-                    SPIN_COMPLETE
-                         │
-                         ▼
-                 ┌──────────────┐
-                 │  EVALUATING  │
-                 └──────┬───────┘
-                        │
-                 EVALUATION_COMPLETE
-                        │
-                        ▼
-                   ┌─────────┐
-                   │ PAYOUT  │
-                   └────┬────┘
-                        │
-                  PAYOUT_COMPLETE
-                        │
-                        ▼
-                     ┌──────┐
-                     │ IDLE │
-                     └──────┘
+### State Diagram
+
+```
+                   START_BET
+                       │
+                       ▼
+                  ┌─────────┐
+                  │  IDLE   │
+                  └────┬────┘
+                       │
+                       ▼
+                  ┌─────────┐
+    ┌────────────→│ BETTING │←────────────┐
+    │             └────┬────┘             │
+    │                  │                  │
+    │           START_SPIN                │
+    │                  │                  │
+    │                  ▼                  │
+    │             ┌─────────┐             │
+    │             │SPINNING │             │
+    │             └────┬────┘             │
+    │                  │                  │
+    │            SHOW_RESULT              │
+    │                  │                  │
+    │                  ▼                  │
+    │             ┌─────────┐             │
+    │             │ RESULT  │             │
+    │             └────┬────┘             │
+    │                  │                  │
+    │            PAY_PLAYER               │
+    │                  │                  │
+    │                  ▼                  │
+    │             ┌─────────┐             │
+    └─────────────│ PAYOUT  │             │
+                  └─────────┘             │
+                                          │
+              TRIGGER_ERROR (any state)   │
+                       ▼                  │
+                  ┌─────────┐             │
+                  │ ERROR   │             │
+                  └────┬────┘             │
+                       │                  │
+                    RESET                 │
+                       │                  │
+                       └──────────────────┘
 ```
 
 ### States
 
-| State          | Purpose                                   |
-| -------------- | ----------------------------------------- |
-| **IDLE**       | Waiting for input or credit               |
-| **ARMED**      | Game is ready to start                    |
-| **SPINNING**   | Processing the current round              |
-| **EVALUATING** | Calculating the round result              |
-| **PAYOUT**     | Processing the resulting payout           |
-| **ERROR**      | Handling invalid or unexpected conditions |
+| State      | Purpose                      |
+|------------|------------------------------|
+| IDLE       | Waiting for bet placement    |
+| BETTING    | Credit accepted, ready       |
+| SPINNING   | Round in progress            |
+| RESULT     | Calculating outcome          |
+| PAYOUT     | Distributing winnings        |
+| ERROR      | Fault state (needs RESET)    |
 
-_The FSM will reject invalid events rather than allowing arbitrary state changes._
+### Key Features
 
-## 🔐 Cryptographic Engine
+- ✅ Single-threaded by design (no mutex)
+- ✅ Invalid events are rejected (return false)
+- ✅ TRIGGER_ERROR works from any state
+- ✅ ERROR state requires explicit RESET
+- ✅ State callbacks for event notification
 
-Aether Engine includes a planned deterministic cryptographic subsystem based around SHA-256. The intended model is:
+## 🏗️ Architecture
 
-```text
-Server Seed
-     +
-Client Seed
-     +
-   Nonce
-     │
-     ▼
-┌─────────────┐
-│   SHA-256   │
-└──────┬──────┘
-       │
-       ▼
-  Round Hash
-       │
-       ├──────────────► Deterministic Outcome
-       │
-       └──────────────► Verification
 ```
-
-The purpose of this component is to explore:
-
-- SHA-256 implementation
-- Deterministic hashing
-- Reproducible results
-- Input/output verification
-- Cryptographic testing
-
-> _Note: This project is educational and is not intended to provide a certified or production-ready gambling RNG._
-
-## 🧵 Concurrency
-
-Hardware events will eventually be simulated from a separate thread.
-
-```text
-┌───────────────────────────┐
-│        Main Thread        │
-│                           │
-│   Game FSM                │
-│   Game Logic              │
-│   Crypto                  │
-└─────────────┬─────────────┘
-              │
-              │ Thread-Safe Event Queue
-              │
-┌─────────────▼─────────────┐
-│      Hardware Thread      │
-│                           │
-│   Credit Events           │
-│   Button Events           │
-│   Serial Events           │
-└───────────────────────────┘
+                 ┌─────────────────┐
+                 │ Aether Engine   │
+                 └────────┬────────┘
+                          │
+          ┌───────────────┼───────────────┐
+          │               │               │
+          ▼               ▼               ▼
+    ┌──────────┐   ┌────────────┐   ┌─────────┐
+    │ Game FSM │   │  Crypto    │   │ Events  │
+    └──────────┘   │  Engine    │   └─────────┘
+                   └────────────┘
+          (Future: Hardware Abstraction Layer)
 ```
-
-Planned synchronization primitives include:
-
-- `std::thread`
-- `std::mutex`
-- `std::lock_guard`
-- `std::condition_variable`
-
-The objective is to understand and demonstrate safe communication between concurrent components.
 
 ## 🧪 Testing
 
-Testing is an important part of the project rather than an afterthought. The test suite will use GoogleTest and CTest.
+### Test Suite
 
-### FSM
+8 passing tests covering:
 
-Planned tests include:
-
-- Initial state validation
-- Valid transitions
-- Invalid transitions
-- State callback behavior
-- Error handling
-
-### Crypto
-
-Planned tests include:
-
-- SHA-256 known test vectors
-- Deterministic output
-- Round hash consistency
-- Outcome reproducibility
-
-### Concurrency
-
-Planned tests include:
-
-- Thread-safe event processing
-- Concurrent state access
-- Race detection with ThreadSanitizer
-
-## 🤖 Continuous Integration
-
-Every push and pull request targeting the main branch will be checked by GitHub Actions. The CI pipeline will:
-
-```text
-Push / Pull Request
-        │
-        ▼
-   Checkout Code
-        │
-        ▼
- Install Dependencies
-        │
-        ▼
-      CMake
-        │
-        ▼
-      Build
-        │
-        ▼
-    GoogleTest
-        │
-        ▼
-      CTest
-        │
-        ▼
-  Sanitizer Checks
+```
+✅ Initial state (IDLE)
+✅ Complete valid cycle (all 5 transitions)
+✅ Invalid event rejection
+✅ TRIGGER_ERROR from any state
+✅ RESET from ERROR → IDLE
+✅ RESET outside ERROR (rejected)
+✅ Callback execution on valid transition
+✅ Callback not called on invalid transition
 ```
 
-This ensures that changes are compiled and tested automatically.
-**Workflow:** `.github/workflows/ci.yml`
+### Running Tests
 
-## 🛠️ Technology Stack
+After building:
 
-| Technology         | Purpose                             |
-| ------------------ | ----------------------------------- |
-| **C++17**          | Core language                       |
-| **CMake**          | Build system                        |
-| **GoogleTest**     | Unit testing                        |
-| **CTest**          | Test execution                      |
-| **GitHub Actions** | Continuous Integration              |
-| **SHA-256**        | Cryptographic hashing               |
-| **ASan**           | Memory error detection              |
-| **TSan**           | Data race detection                 |
-| **Valgrind**       | Memory analysis                     |
-| **STL**            | Containers, threading and utilities |
+```bash
+ctest --test-dir build --output-on-failure
+```
 
-## 💻 Building Locally
+Expected output:
+```
+100% tests passed, 0 tests failed out of 8
+```
+
+## 💻 Building & Running
 
 ### Requirements
 
-- C++17 compatible compiler
-- CMake 3.14+
+- C++17 compatible compiler (GCC, Clang, MSVC)
+- CMake 3.20+
 - Git
-- GoogleTest
-
-### Supported Toolchains
-
-- GCC
-- Clang
-- MSVC
 
 ### Clone
 
@@ -317,221 +187,200 @@ cd aether-engine
 ### Configure
 
 ```bash
-cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug
+cmake -S . -B build
 ```
 
 ### Build
 
 ```bash
-cmake --build build --parallel
+cmake --build build
 ```
 
-### Run
+### Run Demo
 
 ```bash
 ./build/aether_engine
 ```
 
-## 🧪 Run Tests
+Expected output:
+```
+IDLE -> BETTING
+BETTING -> SPINNING
+SPINNING -> RESULT
+RESULT -> PAYOUT
+PAYOUT -> IDLE
+```
 
-After building:
+### Run Tests
 
 ```bash
 ctest --test-dir build --output-on-failure
 ```
 
-Or:
+## 🛠️ Technology Stack
 
-```bash
-cd build
-ctest --output-on-failure
-```
-
-**Example output:**
-
-```text
-Test project /aether-engine/build
-
-    Start 1: FsmTest
-1/2 Test #1: FsmTest .................... Passed
-
-    Start 2: CryptoTest
-2/2 Test #2: CryptoTest ................. Passed
-
-100% tests passed
-```
-
-## 🧰 Sanitizers
-
-Aether Engine is intended to support compiler sanitizers during development.
-
-### AddressSanitizer
-
-```bash
-cmake -B build \
-      -S . \
-      -DCMAKE_BUILD_TYPE=Debug \
-      -DENABLE_ASAN=ON
-
-cmake --build build
-
-ctest --test-dir build --output-on-failure
-```
-
-ASan can help detect problems such as:
-
-- Buffer overflows
-- Use-after-free
-- Use-after-scope
-- Invalid memory access
-- Memory leaks (when LeakSanitizer is available)
-
-### ThreadSanitizer
-
-```bash
-cmake -B build \
-      -S . \
-      -DCMAKE_BUILD_TYPE=Debug \
-      -DENABLE_TSAN=ON
-
-cmake --build build
-
-ctest --test-dir build --output-on-failure
-```
-
-TSan is intended to detect data races in multithreaded code.
+| Technology     | Version | Purpose            |
+|----------------|---------|-------------------|
+| C++            | 17      | Core language      |
+| CMake          | 3.20+   | Build system       |
+| GoogleTest     | 1.14.0  | Unit testing       |
+| CTest          | 3.20+   | Test execution     |
+| GCC/Clang      | Latest  | Compiler           |
+| Linux/macOS    | -       | Primary platforms  |
 
 ## 📁 Project Structure
 
-```text
+```
 aether-engine/
-│
-├── .github/
-│   └── workflows/
-│       └── ci.yml
+├── CMakeLists.txt           # Build configuration
+├── README.md                # This file
+├── .gitignore
 │
 ├── include/
-│   ├── Fsm.hpp
-│   └── CryptoEngine.hpp
+│   ├── Fsm.hpp              # FSM interface
+│   └── Types.hpp            # Shared type definitions
 │
 ├── src/
-│   ├── Fsm.cpp
-│   ├── CryptoEngine.cpp
-│   └── main.cpp
+│   ├── Fsm.cpp              # FSM implementation
+│   ├── main.cpp             # Demo executable
+│   └── (future: CryptoEngine.cpp)
 │
 ├── tests/
-│   ├── test_fsm.cpp
-│   └── test_crypto.cpp
+│   └── FsmTests.cpp         # Unit tests
 │
-├── docs/
-│   ├── ARCHITECTURE.md
-│   ├── TESTING.md
-│   └── HARDWARE.md
-│
-├── CMakeLists.txt
-├── README.md
-└── LICENSE
+└── .git/                    # Git repository
 ```
 
-## 🗺️ Roadmap
+## 🎓 Learning Goals
 
-### Phase 1 — Foundation
+This project demonstrates:
 
-- [x] Project structure
+```
+Modern C++17
+    ├── RAII & smart pointers
+    ├── STL containers & algorithms
+    ├── Const-correctness
+    ├── constexpr & compile-time evaluation
+    ├── enum class & scoped enums
+    └── std::function & callbacks
+
+Software Engineering
+    ├── State machine design
+    ├── Unit testing
+    ├── CMake build systems
+    ├── Version control (Git)
+    ├── Code quality (warnings)
+    └── Debugging with sanitizers
+
+Embedded Systems (Future)
+    ├── Hardware abstraction
+    ├── Event-driven I/O
+    ├── Concurrency & synchronization
+    └── Resource constraints
+```
+
+## 🗺️ Development Roadmap
+
+### Stage 1 ✅
+- [x] Repository setup
 - [x] CMake configuration
-- [ ] Basic executable
-- [ ] FSM implementation
-- [ ] GoogleTest integration
-- [ ] CTest integration
-- [ ] GitHub Actions CI
+- [x] FSM implementation
+- [x] Basic tests
 
-### Phase 2 — Core Engine
+### Stage 2 ✅
+- [x] Comprehensive test suite
+- [x] State validation
+- [x] Callback system
+- [x] Error handling
 
-- [ ] Event system
-- [ ] State callbacks
+### Stage 3 🚧
+- [ ] AddressSanitizer integration
+- [ ] UndefinedBehaviorSanitizer
+- [ ] RAII best practices
+- [ ] Reliable test patterns
+- [ ] Debugging exercises
+
+### Stage 4 ⏳
 - [ ] SHA-256 implementation
-- [ ] Deterministic round generation
-- [ ] Outcome mapping
-- [ ] Error handling
+- [ ] Cryptographic round generation
+- [ ] Deterministic outcome mapping
+- [ ] Verification protocol
 
-### Phase 3 — Concurrency
-
-- [ ] Hardware event simulation
+### Stage 5 ⏳
 - [ ] Thread-safe event queue
-- [ ] Condition variable integration
-- [ ] ThreadSanitizer CI job
+- [ ] Hardware simulation
+- [ ] Concurrent state access
+- [ ] ThreadSanitizer integration
 
-### Phase 4 — Embedded Architecture
-
+### Stage 6 ⏳
 - [ ] Hardware abstraction layer
-- [ ] UART support
+- [ ] UART communication
 - [ ] GPIO abstraction
-- [ ] I2C support
-- [ ] SPI support
-- [ ] Raspberry Pi target
+- [ ] Embedded targets
 
-### Phase 5 — Tooling & Observability
+## 🧰 Development Tools
 
-- [ ] Structured logging
-- [ ] Configuration system
-- [ ] Performance benchmarks
-- [ ] Static analysis
-- [ ] Code coverage
-- [ ] Documentation improvements
+### Compiler Warnings
+
+All builds use strict warning flags:
+```bash
+-Wall -Wextra -Wpedantic
+```
+
+This ensures code quality from the ground up.
+
+### Sanitizers (Stage 3+)
+
+Planned integration:
+- **AddressSanitizer**: Memory error detection
+- **UndefinedBehaviorSanitizer**: Undefined behavior detection
+- **ThreadSanitizer**: Data race detection (Stage 5)
+
+### Code Analysis
+
+Future tools:
+- `clang-tidy`: Static analysis
+- `cppcheck`: Code quality
+- `valgrind`: Memory profiling
+- `gcov`/`llvm-cov`: Code coverage
 
 ## 📚 Documentation
 
-Technical documentation will be added as the project evolves.
-
-- `ARCHITECTURE.md` — System architecture
-- `TESTING.md` — Testing strategy
-- `HARDWARE.md` — Hardware abstraction and integration
-
-## 🎓 What I'm Learning
-
-This project is being developed as part of my journey as a Junior C++ / Embedded Developer. The main areas I'm practicing are:
-
-```text
-C++17
- │
- ├── RAII & Smart Pointers
- ├── STL
- ├── Templates
- ├── Concurrency
- ├── Error Handling
- │
- ├── CMake
- ├── Unit Testing
- ├── CI/CD
- │
- ├── Linux
- ├── Networking
- └── Embedded Systems
-```
-
-The project will evolve incrementally, with the goal of learning how to design, test, debug, and maintain a systems-oriented C++ codebase.
+- `README.md` — Project overview (this file)
+- `.github/workflows/` — CI/CD pipeline (planned)
+- Stage-specific guides in project docs
 
 ## 🤝 Contributing
 
-This is primarily a personal learning and portfolio project, but technical suggestions and contributions are welcome.
+This is a personal learning project, but technical suggestions are welcome.
 
-```bash
-git checkout -b feature/my-feature
-git add .
-git commit -m "feat: add my feature"
-git push origin feature/my-feature
-```
-
-Then open a Pull Request.
+For changes:
+1. Create a feature branch
+2. Make your changes
+3. Run tests: `ctest --test-dir build --output-on-failure`
+4. Ensure no compiler warnings
+5. Open a pull request
 
 ## 📄 License
 
-This project is licensed under the MIT License. See `LICENSE` for details.
+MIT License. See LICENSE file for details.
 
 ## 👨‍💻 Author
 
-[**Javier L.**](https://www.linkedin.com/in/javierlsw/)
+**Javier L.** — Junior C++ / Embedded Systems Developer
 
-## ⭐ Why Aether Engine?
+- GitHub: [@javtl](https://github.com/javtl)
+- LinkedIn: [prfile](https://www.linkedin.com/in/javierlsw)
 
-Aether Engine is a practical project for exploring how modern C++ can be used to build software that sits close to hardware.
+## 🎯 Why This Project?
+
+Aether Engine bridges theory and practice by building a realistic embedded system in pure C++. It's designed to answer the question:
+
+> **Can I write production-grade C++ code that's safe, tested, and maintainable?**
+
+The answer lives in the code.
+
+---
+
+**Last Updated**: October 2026  
+**Status**: Early Development (Stage 2 Complete, Stage 3 In Progress)

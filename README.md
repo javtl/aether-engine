@@ -370,7 +370,7 @@ MIT License. See LICENSE file for details.
 **Javier L.** — Junior C++ / Embedded Systems Developer
 
 - GitHub: [@javtl](https://github.com/javtl)
-- LinkedIn: [@javoerlsw](https://www.linkedin.com/in/javierlsw)
+- LinkedIn: [@javierlsw](https://www.linkedin.com/in/javierlsw)
 
 ## 🎯 Why This Project?
 
